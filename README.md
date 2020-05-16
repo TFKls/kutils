@@ -7,7 +7,7 @@ This repository contains some shell scripts and other utility programs I've made
   
 ### Programs
   As of the current readme version the programs contained are :
-  - None :(
+  - [Lnch](/lnch/README.md)
   
   I plan on adding more programs over time.
 #### License
