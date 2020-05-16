@@ -1,3 +1,6 @@
+#!/bin/bash
+# This is a short proof of concept program for the Lnch utility
+
 installPath="" # Here is where you need to enter install path should you use this version 
 # source "${installPath}launch.conf" unimplemented feature for config files
 noFlag=1
