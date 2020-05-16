@@ -1,7 +1,7 @@
 ## Lnch 
 *A shell utility that executes a Launchfile  
 Useful for when the app needs an terminal in the background, 
-as well as when you don't want to add a directory with a binary to a path*
+as well as when you don't want to add a directory with a binary to PATH*
 
 ### Versions
 version0 directory contains a very early version of the program  
