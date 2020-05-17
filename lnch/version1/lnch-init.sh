@@ -30,9 +30,17 @@ case $1 in
 		echo "alias lnch=$currentDir/lnch.sh" >> ~/.bash_aliases
 		echo "alias lnch-create=$currentDir/lnch-create.sh" >> ~/.bash_aliases
 		touch lnch.cfg
-		echo "lnchSPath=$currentDir/lnchfiles" >> lnch.cfg
+		echo "lnchSPath=\"$currentDir/lnchfiles\"" >> lnch.cfg
 		echo "savedCreateOption=0" >> lnch.cfg
-		mkdir "$currentDir/lnchfiles"
+		if ! test -e "$currentDir/lnchfiles"; then
+			mkdir "$currentDir/lnchfiles"
+		fi
+		if ! test -e "$currentDir/lnchfiles/help/Launchfile"; then
+			cp "$currentDir/helpLnch" "$currentDir/lnchfiles/help/Launchfile"
+			chmod +x "$currentDir/lnchfiles/help/Launchfile"
+		fi
+		chmod +x lnch.sh
+		chmod +x lnch-create.sh
 		echo "Installation should be completed successsully. Please restart your shell."
 		exit 0
 	;;
