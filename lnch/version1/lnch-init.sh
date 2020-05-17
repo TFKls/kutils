@@ -29,6 +29,10 @@ case $1 in
 	[pP][rR][oO][cC][eE][eE][dD])
 		echo "alias lnch=$currentDir/lnch.sh" >> ~/.bash_aliases
 		echo "alias lnch-create=$currentDir/lnch-create.sh" >> ~/.bash_aliases
+		touch lnch.cfg
+		echo "lnchSPath=$currentDir/lnchfiles" >> lnch.cfg
+		echo "savedCreateOption=0" >> lnch.cfg
+		mkdir "$currentDir/lnchfiles"
 		echo "Installation should be completed successsully. Please restart your shell."
 		exit 0
 	;;
@@ -39,15 +43,21 @@ case $1 in
 	esac
 	;;
 [uU][nN][iI][nN][sS][tT][aA][lL][lL]|[uU])
-	echo "This will uninstall the script by using sed on ~/.bash_aliases"
-	echo "It will also create a backup (~/.bash_aliases.bak)"
+	echo "This will uninstall the script."
 	echo "Write \"proceed\" to proceed"
 	read installOption
 	currentDir=`pwd`
 	case $installOption in
 	[pP][rR][oO][cC][eE][eE][dD])
 		sed -i.bak '/lnch/d' ~/.bash_aliases
-		echo "Unstallation should be completed successsully."
+		rm lnch.cfg
+		deleteAllLnch =
+		echo "Do you want to completely remove all the shortcuts? (UNREVERSIBLE) [write \"yes-absolutely\" if you want to do it]"
+		read deleteAllLnch
+		if ((deleteAllLnch == "yes-absolutely")); then
+			rm -r "$currentDir/lnchfiles"
+		fi
+		echo "Uninstallation should be completed successsully."
 		exit 0
 	;;
 	*)
