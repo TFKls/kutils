@@ -16,12 +16,12 @@
 #
 #
 # TO DO : COMPLETION
-if ! test -f "lnch.cfg" ; then
+if ! test -f "$HOME/.lnch.cfg" ; then
 	echo "No config file found."
 	exit 1
 fi
 flag=0
-source lnch.cfg
+source "$HOME/.lnch.cfg"
 while getopts ":r:n:c" opt; do
 	case $opt in
 	r)
