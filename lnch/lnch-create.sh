@@ -49,7 +49,7 @@ while getopts ":r:n:c:e:" opt; do
 		mkdir "$HOME/.lnch/lnchfiles/$newLnchName"
 		echo "#!/bin/bash" >> "$HOME/.lnch/lnchfiles/$newLnchName/Launchfile"
 		chmod +x "$HOME/.lnch/lnchfiles/$newLnchName/Launchfile"
-		echo newLnchName >> "$HOME/.lnch/complete"
+		echo $newLnchName >> "$HOME/.lnch/complete"
 		exec $savedCreateOption "$HOME/.lnch/lnchfiles/$newLnchName/Launchfile"
 		;;
 	c) 
