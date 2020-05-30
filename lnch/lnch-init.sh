@@ -16,7 +16,7 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 case $1 in
 [iI][nN][sS][tT][aA][lL][lL]|[iI])
-	if test -f "$HOME/.lnch.cfg"; then
+	if test -f "$HOME/.lnch/cfg"; then
 		echo "Error - already initiated."
 		echo "Launch with \"uninstall\" to uninstall"
 		exit 2
@@ -27,21 +27,28 @@ case $1 in
 	currentDir=`pwd`
 	case $installOption in
 	[pP][rR][oO][cC][eE][eE][dD])
-		echo "alias lnch=$currentDir/lnch.sh" >> ~/.bash_aliases
-		echo "alias lnch-create=$currentDir/lnch-create.sh" >> ~/.bash_aliases
-		touch "$HOME/.lnch.cfg"
-		echo "lnchSPath=\"$currentDir/lnchfiles\"" >> "$HOME/.lnch.cfg"
-		echo "savedCreateOption=0" >> "$HOME/.lnch.cfg"
-		if ! test -e "$currentDir/lnchfiles"; then
-			mkdir "$currentDir/lnchfiles"
+		echo "alias lnch=$HOME/.lnch/lnch.sh" >> ~/.bash_aliases
+		echo "alias lnch-create=$HOME/.lnch/lnch-create.sh" >> ~/.bash_aliases
+		echo -e "source \"$HOME/.lnch/completion-scripts\"" >> ~/.bash_aliases
+		mkdir "$HOME/.lnch"
+		cp "$currentDir/lnch.sh" "$HOME/.lnch/lnch.sh"
+		cp "$currentDir/lnch-create.sh" "$HOME/.lnch/lnch-create.sh"
+		cp "$currentDir/completion-scripts" "$HOME/.lnch/completion-scripts"
+		touch "$HOME/.lnch/cfg"
+		echo "savedCreateOption=nano" >> "$HOME/.lnch/cfg"
+		if ! test -e "$HOME/.lnch/lnchfiles"; then
+			mkdir "$HOME/.lnch/lnchfiles"
 		fi
-		if ! test -e "$currentDir/lnchfiles/help/Launchfile"; then
-			mkdir "$currentDir/lnchfiles/help"
-			cp "$currentDir/helpLnch" "$currentDir/lnchfiles/help/Launchfile"
-			chmod +x "$currentDir/lnchfiles/help/Launchfile"
+		if ! test -e "$HOME/.lnch/lnchfiles/help/Launchfile"; then
+			mkdir "$HOME/.lnch/lnchfiles/help"
+			cp "$currentDir/helpLnch" "$HOME/.lnch/lnchfiles/help/Launchfile"
+			chmod +x "$HOME/.lnch/lnchfiles/help/Launchfile"
 		fi
-		chmod +x lnch.sh
-		chmod +x lnch-create.sh
+		chmod +x "$HOME/.lnch/lnch.sh"
+		chmod +x "$HOME/.lnch/lnch-create.sh"
+		chmod +x "$HOME/.lnch/completion-scripts"
+		touch "$HOME/.lnch/complete"
+		echo "help" >> "$HOME/.lnch/complete"
 		echo "Installation should be completed successsully. Please restart your shell."
 		exit 0
 	;;
@@ -52,25 +59,21 @@ case $1 in
 	esac
 	;;
 [uU][nN][iI][nN][sS][tT][aA][lL][lL]|[uU])
-	if ! test -f "$HOME/.lnch.cfg"; then
+	if ! test -f "$HOME/.lnch/cfg"; then
 		echo "Error - No config found."
 		echo "Launch with \"install\" to install"
 		exit 2
 	fi
 	echo "This will uninstall the script."
+	echo "It will also remove ALL THE LAUNCHFILES"
+	echo "PLEASE BACK THEM UP IF YOU WANT TO KEEP THEM"
 	echo "Write \"proceed\" to proceed"
 	read installOption
 	currentDir=`pwd`
 	case $installOption in
 	[pP][rR][oO][cC][eE][eE][dD])
 		sed -i.bak '/lnch/d' ~/.bash_aliases
-		rm "$HOME/.lnch.cfg"
-		deleteAllLnch="no"
-		echo "Do you want to completely remove all the shortcuts? (UNREVERSIBLE) [write \"yes-absolutely\" if you want to do it]"
-		read deleteAllLnch
-		if ((deleteAllLnch == "yes-absolutely")); then
-			rm -r "$currentDir/lnchfiles"
-		fi
+		rm -r "$HOME/.lnch"
 		echo "Uninstallation should be completed successsully."
 		exit 0
 	;;

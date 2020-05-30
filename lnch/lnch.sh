@@ -14,16 +14,16 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see <http://www.gnu.org/licenses/>.
-if ! test -f "$HOME/.lnch.cfg" ; then
+if ! test -f "$HOME/.lnch/cfg" ; then
     echo "No config file found."
     exit 1
 fi
-source "$HOME/.lnch.cfg"
-if ! test -f "$lnchSPath/${1,,}/Launchfile" ; then
+source "$HOME/.lnch/cfg"
+if ! test -f "$HOME/.lnch/lnchfiles/${1,,}/Launchfile" ; then
     echo "No such program."
     exit 1
 fi
-source "$lnchSPath/${1,,}/Launchfile"
+source "$HOME/.lnch/lnchfiles/${1,,}/Launchfile"
 # Yes, the code it that simple (exec), it also gives you the possibility for 
 # manually creating advanced programs with the power of bash :D
 #

@@ -1,0 +1,18 @@
+#!/bin/bash
+__lnchcompletionfunc()
+{
+  if [ "${#COMP_WORDS[@]}" != "2" ]; then
+    return
+  fi
+  local gen=($(compgen -W "$(cat $HOME/.lnch/complete)" -- "${COMP_WORDS[1]}"))
+  if [ "${#gen[@]}" == "1" ]; then
+    COMPREPLY=("$(echo ${gen[0]/%\ */})")
+  else
+    COMPREPLY=("${gen[@]}")
+  fi
+}
+
+complete -F __lnchcompletionfunc lnch
+
+# Part of completion script adopted from here: 
+# <https://opensource.com/article/18/3/creating-bash-completion-script>
