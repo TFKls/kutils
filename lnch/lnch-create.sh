@@ -64,7 +64,7 @@ while getopts ":r:n:c:e:" opt; do
 			exit 1
 		fi
 		echo $savedCreateOption
-		exec $savedCreateOption ${OPTARG,,}
+		exec $savedCreateOption "$HOME/.lnch/lnchfiles/${OPTARG,,}/Launchfile"
 		;;
 	esac
 done
