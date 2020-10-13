@@ -16,7 +16,6 @@ It accepts the following arguments :
 - `lnch-create -n name` - creates a script file
 - `lnch-create -e name` - edits a script file  
 - `lnch-create -r name` - deletes a script file  
-- `lnch-create -c name` - chooses an editor for script file editing  
 I suggest using `lnch-create` all the time, since it also automatically backups deletions, and will be used for adding dynamic bash completion.
 
 Launchfiles are in reality bash scripts sourced by the lnch script.  

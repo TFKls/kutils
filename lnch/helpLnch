@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 echo "Lnch utility - help"
 echo "Copyright (C) TFKls 2020"
 echo ""

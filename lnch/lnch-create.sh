@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # This script creates a new Launchfile for usage with the Lnch utility
 # Copyright (C) 2020 TFKls
 #
@@ -20,58 +20,59 @@ if ! test -f "$HOME/.lnch/cfg" ; then
 	echo "No config file found."
 	exit 1
 fi
-flag=0
 
-source "$HOME/.lnch/cfg"
-while getopts ":r:n:c:e:" opt; do
-	case $opt in
+. "$HOME/.lnch/cfg"
+while getopts ":r:n:e:" opt; do
+    case $opt in
 	r)
-		if ! test -f "$HOME/.lnch/lnchfiles/${OPTARG,,}/Launchfile"; then
-			echo "Launchfile does not exist."
-			exit 1
+	    if ! test -f "$HOME/.lnch/lnchfiles/${OPTARG,,}/Launchfile"; then
+		echo "Launchfile does not exist."
+		exit 1
+	    fi
+	    if ! test -e "$HOME/.lnch/lnchfiles/backups/"; then
+		mkdir "$HOME/.lnch/lnchfiles/backups"
 		fi
-		if ! test -e "$HOME/.lnch/lnchfiles/backups/"; then
-			mkdir "$HOME/.lnch/lnchfiles/backups"
-		fi
-		mv "$HOME/.lnch/lnchfiles/${OPTARG,,}/Launchfile" "$HOME/.lnch/lnchfiles/backups/${OPTARG,,}.lnchbk"
-		rm -r "$HOME/.lnch/lnchfiles/${OPTARG,,}"
-		sed -i.bak "/${OPTARG,,}/d" "$HOME/.lnch/complete"
-		rm "$HOME/.lnch/complete.bak"
-		echo "The shortcut should be deleted and a backup created"
-		exit 0
-		;;
+	    mv "$HOME/.lnch/lnchfiles/${OPTARG,,}/Launchfile" "$HOME/.lnch/lnchfiles/backups/${OPTARG,,}.lnchbk"
+	    rm -r "$HOME/.lnch/lnchfiles/${OPTARG,,}"
+	    sed -i.bak "/${OPTARG,,}/d" "$HOME/.lnch/complete"
+	    rm "$HOME/.lnch/complete.bak"
+	    echo "The shortcut should be deleted and a backup created"
+	    exit 0
+	    ;;
 	n)
-		newLnchName="${OPTARG,,}"
-		if test -f "$HOME/.lnch/lnchfiles/$newLnchName/Launchfile"; then
-			echo "Launchfile already exists, aborting"
-			exit 1
-		fi
-		mkdir "$HOME/.lnch/lnchfiles/$newLnchName"
-		echo "#!/bin/bash" >> "$HOME/.lnch/lnchfiles/$newLnchName/Launchfile"
-		chmod +x "$HOME/.lnch/lnchfiles/$newLnchName/Launchfile"
-		echo $newLnchName >> "$HOME/.lnch/complete"
-		exec $savedCreateOption "$HOME/.lnch/lnchfiles/$newLnchName/Launchfile"
-		;;
-	c) 
-		sed -i.bak "/savedCreateOption/d" "$HOME/.lnch/cfg"
-		rm "$HOME/.lnch/cfg.bak"
-		echo "savedCreateOption=$OPTARG" >> "$HOME/.lnch/cfg"
-		exit 0
-		;;
+	    newLnchName="${OPTARG,,}"
+	    if test -f "$HOME/.lnch/lnchfiles/$newLnchName/Launchfile"; then
+		echo "Launchfile already exists, aborting"
+		exit 1
+	    fi
+	    mkdir "$HOME/.lnch/lnchfiles/$newLnchName"
+	    echo "#!/bin/sh" >> "$HOME/.lnch/lnchfiles/$newLnchName/Launchfile"
+	    chmod +x "$HOME/.lnch/lnchfiles/$newLnchName/Launchfile"
+	    echo "$newLnchName" >> "$HOME/.lnch/complete"
+	    exec "$EDITOR" "$HOME/.lnch/lnchfiles/$newLnchName/Launchfile"
+	    ;;
 	e) 
-		if ! [[ -f "$HOME/.lnch/lnchfiles/${OPTARG,,}/Launchfile" ]] ; then
-			echo "Launchfile does not exist."
-			exit 1
-		fi
-		echo $savedCreateOption
-		exec $savedCreateOption "$HOME/.lnch/lnchfiles/${OPTARG,,}/Launchfile"
-		;;
+	    if ! [ -f "$HOME/.lnch/lnchfiles/${OPTARG,,}/Launchfile" ] ; then
+		echo "Launchfile does not exist."
+		exit 1
+	    fi
+	    exec "$EDITOR" "$HOME/.lnch/lnchfiles/${OPTARG,,}/Launchfile"
+	    ;;
+	*)
+	    echo "Wrong argument"
+	    echo "USAGE : "
+	    echo "	lnch-create -n name  -> new shortcut named \"name\""
+	    echo "	lnch-create -e name  -> edit shortcut named \"name\""
+	    echo "	lnch-create -r name  -> remove shortcut named \"name\""
+	    exit 2
+	    ;;
+
 	esac
 done
+
 echo "Wrong argument"
 echo "USAGE : "
 echo "	lnch-create -n name  -> new shortcut named \"name\""
 echo "	lnch-create -e name  -> edit shortcut named \"name\""
 echo "	lnch-create -r name  -> remove shortcut named \"name\""
-echo "	lnch-create -c name  -> change default editor used for editing shortcuts"
-exit 0
+exit 2

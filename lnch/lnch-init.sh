@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # This is a short program for adding all the dependencies and creating the 
 # standard config for the lnch utility 
 # Copyright (C) 2020 TFKls
@@ -23,8 +23,8 @@ case $1 in
 	fi
 	echo "This will install the script by adding an alias in ~/.bash_aliases"
 	echo "Write \"proceed\" to proceed with the installation"
-	read installOption
-	currentDir=`pwd`
+	read -r installOption
+	currentDir=$(pwd)
 	case $installOption in
 	[pP][rR][oO][cC][eE][eE][dD])
 		echo "alias lnch=$HOME/.lnch/lnch.sh" >> ~/.bash_aliases
@@ -35,7 +35,7 @@ case $1 in
 		cp "$currentDir/lnch-create.sh" "$HOME/.lnch/lnch-create.sh"
 		cp "$currentDir/completion-scripts" "$HOME/.lnch/completion-scripts"
 		touch "$HOME/.lnch/cfg"
-		echo "savedCreateOption=nano" >> "$HOME/.lnch/cfg"
+		
 		if ! test -e "$HOME/.lnch/lnchfiles"; then
 			mkdir "$HOME/.lnch/lnchfiles"
 		fi
@@ -68,8 +68,8 @@ case $1 in
 	echo "It will also remove ALL THE LAUNCHFILES"
 	echo "PLEASE BACK THEM UP IF YOU WANT TO KEEP THEM"
 	echo "Write \"proceed\" to proceed"
-	read installOption
-	currentDir=`pwd`
+	read -r installOption
+	currentDir=$(pwd)
 	case $installOption in
 	[pP][rR][oO][cC][eE][eE][dD])
 		sed -i.bak '/lnch/d' ~/.bash_aliases

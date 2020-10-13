@@ -1,4 +1,0 @@
-# Ignore for private config as well as launchfiles for Lnch utility
-**/lnch.cfg
-**/Launchfile
-**/*.lnchbk

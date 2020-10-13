@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Lnch - a shell program to source other shell programs and create shortcuts
 # for other programs not on path.
 # Copyright (C) 2020 TFKls
@@ -18,14 +18,14 @@ if ! test -f "$HOME/.lnch/cfg" ; then
     echo "No config file found."
     exit 1
 fi
-source "$HOME/.lnch/cfg"
+. "$HOME/.lnch/cfg"
 if ! test -f "$HOME/.lnch/lnchfiles/${1,,}/Launchfile" ; then
     echo "No such program."
     exit 1
 fi
-source "$HOME/.lnch/lnchfiles/${1,,}/Launchfile"
+. "$HOME/.lnch/lnchfiles/${1,,}/Launchfile"
 # Yes, the code it that simple (exec), it also gives you the possibility for 
-# manually creating advanced programs with the power of bash :D
+# manually creating advanced programs with the power of sh :D
 #
 # Also I used directories and Launchfiles instead of sth like a main directory 
 # with name.lnch files, because some programs may be more advanced and want
